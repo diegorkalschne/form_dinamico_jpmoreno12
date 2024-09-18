@@ -4,22 +4,19 @@ import 'package:formulario_dynamico/screens/widgets/form_widget.dart';
 class FieldController extends ValueNotifier<List<Field>> {
 
 
-  FieldController(super.value);
+  FieldController() : super([]);
 
 
   increment(Field field){
     value.add(field);
-    print(value);
+    notifyListeners();
   }
 
-  decrement(Field field) {
-    if (value.isNotEmpty) 
-    {
-      value.removeAt(value.length-1);
-      print(value);
-    } else 
-    { 
-      print('Lista vazia');
+  decrement(int index) {
+    if (index >=0 && index < value.length) { 
+      value.removeAt(index);
+      notifyListeners();
     }
   }
+  
 }

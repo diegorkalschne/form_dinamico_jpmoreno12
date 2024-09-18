@@ -10,9 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FieldController fieldController = FieldController([]);
-
-  Field fields = Field();
+  final FieldController fieldController = FieldController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: _addingFields,
+            onPressed: _addingField,
             icon: const Icon(
               Icons.add_circle_rounded,
               color: Colors.white,
@@ -45,41 +43,45 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: Container(
-          child: Center(
-            child: Column(
-              children: [
-                const Text(
-                  'Forms',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Expanded(
-                  child: Form(
-                    child: ValueListenableBuilder(
-                        valueListenable: fieldController,
-                        builder: (context, value, child) {
-                          return ListView.builder(
-                            itemCount: fieldController.value.length,
-                            itemBuilder: (context, index) => Field(),
+        child: Center(
+          child: Column(
+            children: [
+              const Text(
+                'Forms',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ),
+              const SizedBox(height: 15),
+              Expanded(
+                child: Form(
+                  child: ValueListenableBuilder<List<Field>>(
+                    valueListenable: fieldController,
+                    builder: (context, listFields, child) {
+                      return ListView.builder(
+                        itemCount: listFields.length,
+                        itemBuilder: (context, index) {  /*  como os field estao sendo passados usando o lenght,
+                         pode gerar uma confusao entre o index e lenght,
+                         entao a key garante uma identifiçao 
+                         unica para cada item da lista baseado no index  */
+                          return Field(
+                            key: ValueKey(index), // GARANTE QUE CADA CAMPO TENHA UMA IDENTIFICAÇAO UNICA BASEADA NO INDEX
+                            index: index,
+                            fieldController: fieldController,
                           );
-                        }),
+                        },
+                      );
+                    },
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  _addingFields() {
-    fieldController.increment(fields);
-    setState(() {});
+  void _addingField() {
+    // Passando o índice baseado na contagem atual de campos
+    fieldController.increment(Field(index: fieldController.value.length, fieldController: fieldController));
   }
-
-
 }
