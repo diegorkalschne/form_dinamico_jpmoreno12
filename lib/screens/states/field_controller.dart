@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:formulario_dynamico/screens/widgets/form_widget.dart';
+import 'package:formulario_dynamico/screens/models/field_model.dart';
 
-class FieldController extends ValueNotifier<List<Field>> {
-
-
+class FieldController extends ValueNotifier<List<FieldModel>> {
   FieldController() : super([]);
 
-
-  increment(Field field){
+  void addField(FieldModel field) {
     value.add(field);
     notifyListeners();
   }
 
-  decrement(int index) {
-    if (index >=0 && index < value.length) { 
-      value.removeAt(index);
-      notifyListeners();
-    }
+  void removeField(FieldModel field) {
+    value.remove(field);
+    notifyListeners();
   }
-  
 }
