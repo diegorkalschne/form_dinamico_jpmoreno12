@@ -11,8 +11,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //Instancia gerada do Gerenciador de Estado
   final fieldsController = FieldController();
 
+  /* Esta funcao esta sendo usada para passar uma instancia unica da minha classe
+  para a lista do ValueNotifier  */
   void addNewField() {
     fieldsController.addField(FieldModel(UniqueKey()));
   }
@@ -58,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 15),
               Expanded(
                 child: Form(
+                /* cada vez que e criada uma instancia unica de field usando a key
+                  o valueListenable junto ao listBuilder acaba retornando um novo campo
+                  na tela  */
                   child: ValueListenableBuilder<List<FieldModel>>(
                     valueListenable: fieldsController,
                     builder: (_, fields, __) {
@@ -67,7 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           final field = fields[index];
 
                           return FieldWidget(
+                            //Key que esta tornando cada campo unico junto a instancia  
                             key: field.key,
+                            //field == value
                             field: field,
                             onRemove: (field) {
                               FocusManager.instance.primaryFocus?.unfocus();
